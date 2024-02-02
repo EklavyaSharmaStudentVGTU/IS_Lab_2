@@ -1,111 +1,36 @@
-# IS-lab-2
-work from teacher
-clear
-close all
-clc
-%given data in question
-x = 0.1:1/220:1;
-d = ((1 + 0.6 * sin( 2 * pi * x/0.7))  + (0.3 * sin( 2 * pi * x ))) /2;
-%plot(x,d);
+IS-Lab2 (EN)
+Intelligent systems. Task for the laboratory on Multi-Layer Perceptron training.
 
+Aim
+Learn to write training (parameter estimation) algorithm for the Multi-Layer Perceptron based approximator.
 
-%first layer percept
-%I layer
-w11_1 = rand(1);
-b1_1 = rand(1);
+Tasks (maximum 8 points)
+Create a program to calculate the coefficients of the multilayer perceptron. The multilayer perceptron must perform the function of an approximator. Structure of the multilayer perceptron:
+one input (input 20 input vectors (20 examples) X, with values in the range 0 to 1, eg x = 0.1: 1/22: 1;).
+one output (for example, the output is expecting the desired response that can be calculated using the formula: y = (1 + 0.6 * sin (2 * pi * x / 0.7)) + 0.3 * sin (2 * pi * x)) / 2; - the neural network being created should "model / simulate the behavior of this formula" using a completely different mathematical expression than this);
+One hidden layer with hyperbolic tangent or sigmoidal activation functions in neurons (number of neurons: 4-8);
+linear activation function in the output neuron;
+training algorithm - Backpropagation.
+Additional task (2 additional points)
+Solve the surface approximation task (two inputs and single output).
 
-w12_1 = rand(1);
-b2_1 = rand(1);
+Suggested reading
+Neural Networks and Learning Machines (3rd Edition), page <...>, Table 1.1.
+IS-Lab2 (LT)
+Intelektualiosios sistemos. Antrojo laboratorinio darbo užduotis.
 
-w13_1 = rand(1);
-b3_1 = rand(1);
+Tikslas
+Išmokti savarankiškai suprogramuoti paprasto netiesinio aproksimatoriaus mokymo (parametrų skaičiavimo) algoritmą.
 
-w14_1 = rand(1);
-b4_1 = rand(1);
+Užduotys (maks. 8 balai)
+Sukurkite daugiasluoksnio perceptrono koeficientams apskaičiuoti skirtą programą. Daugiasluoksnis perceptronas turi atlikti aproksimatoriaus funkciją. Daugiasluoksnio perceptrono struktūra:
+vienas įėjimas (įėjime paduodamas 20 skaičių vektorius X, su reikšmėmis intervale nuo 0 iki 1, pvz., x = 0.1:1/22:1; ).
+vienas išėjimas (pvz., išėjime tikimasi tokio norimo atsako, kurį galima būtų apskaičiuoti pagal formulę: y = (1 + 0.6*sin(2*pi*x/0.7)) + 0.3*sin(2*pi*x))/2; - kuriamas neuronų tinklas turėtų "modeliuoti/imituoti šios formulės elgesį" naudodamas visiškai kitokią matematinę išraišką nei ši);
+vienas paslėptasis sluoksnis su hiperbolinio tangento arba sigmoidinėmis aktyvavimo funkcijomis neuronuose (neuronų skaičius: 4-8);
+tiesine aktyvavimo funkcija išėjimo neurone;
+mokymo algoritmas - Backpropagation (atgalinio sklidimo).
+Papildoma užduotis (papildomi 2 balai)
+Išspręskite paviršiaus aproksimavimo uždavinį, kai tinklas turi du įėjimus ir vieną išėjimą.
 
-%second layer percept
-%II layer
-w11_2 = rand(1);
-w21_2 = rand(1);
-w31_2 = rand(1);
-w41_2 = rand(1);
-
-%bies
-b1_2 = rand(1);
-eta = 0.01;
-
-
-for index=1:100000
-  %Training
-    for i =1:length(x)
-        v1_1 = x(i) * w11_1 + b1_1;
-        v2_1 = x(i) * w12_1 + b2_1;
-        v3_1 = x(i) * w13_1 + b3_1;
-        v4_1 = x(i) * w14_1 + b4_1;
-
-        
-        %activation
-        y1_1 = tanh(v1_1);
-        y2_1 = tanh(v2_1);
-        y3_1 = tanh(v3_1);
-        y4_1 = tanh(v4_1);
-
-        %last layer
-        v1_2 = y1_1 * w11_2 + y2_1 * w21_2 + y3_1 * w31_2 + y4_1 * w41_2 + b1_2;
-        y1_2 = v1_2;
-
-         %error
-        e = d(i) - y1_2;
-
-        %update weights
-        delta1_2 = e;
-        w11_2 = w11_2 + eta * delta1_2 * y1_1;
-        w21_2 = w21_2 + eta * delta1_2 * y2_1;
-        w31_2 = w31_2 + eta * delta1_2 * y3_1;
-        w41_2 = w41_2 + eta * delta1_2 * y4_1;
-
-        b1_2 = b1_2 + eta * delta1_2;
-
-
-        delta1_1 = (1-(tanh(y1_1)^2)) * delta1_2 * w11_2;
-        delta2_1 = (1-(tanh(y2_1)^2)) * delta1_2 * w21_2;
-        delta3_1 = (1-(tanh(y3_1)^2)) * delta1_2 * w31_2;
-        delta4_1 = (1-(tanh(y4_1)^2)) * delta1_2 * w41_2;
-
-        w11_1 = w11_1 + eta * delta1_1 * x(i);
-        w12_1 = w12_1 + eta * delta2_1 * x(i);
-        w13_1 = w13_1 + eta * delta3_1 * x(i);
-        w14_1 = w14_1 + eta * delta4_1 * x(i);
-
-        b1_1 = b1_1 + eta * delta1_1;
-        b2_1 = b2_1 + eta * delta2_1;
-        b3_1 = b3_1 + eta * delta3_1;
-        b4_1 = b4_1 + eta * delta4_1;
-
-    end
-
-
-end
-
-%testing
-X = 0.1:1/220:1;
-Y = zeros(1,length(X));
-
-for i=1:length(X)
-    v1_1 = X(i) * w11_1 + b1_1;
-    v2_1 = X(i) * w12_1 + b2_1;
-    v3_1 = X(i) * w13_1 + b3_1;
-    v4_1 = X(i) * w14_1 + b4_1;
-
-    y1_1 = tanh(v1_1);
-    y2_1 = tanh(v2_1);
-    y3_1 = tanh(v3_1);
-    y4_1 = tanh(v4_1);
-
-    v1_2 = y1_1 * w11_2 + y2_1 * w21_2 + y3_1 * w31_2 + y4_1 * w41_2 + b1_2;
-    Y(i) = v1_2;
-end
-
-
-plot(X, Y, "r", x, d,"b");
-disp("end");
+Rekomenduojama literatūra
+Neural Networks and Learning Machines (3rd Edition), <...> psl., <...> lentelė
